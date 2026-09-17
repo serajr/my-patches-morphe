@@ -8,7 +8,6 @@ val examplePatch = bytecodePatch(
     name = "Fix One UI Navigation Bar",
     description = "Força o reprodutor de vídeo do YouTube a adicionar padding inferior correspondente à altura real dos botões fixos da One UI."
 ) {
-    // Caso seu patch precise de dependências globais, adicione-as dentro do bloco dependsOn
     dependsOn()
 
     execute {
@@ -18,8 +17,8 @@ val examplePatch = bytecodePatch(
             // Captura o índice da primeira instrução correspondente
             val targetIndex = YouTubePlayerViewFingerprint.instructionMatches.first().index
             
-            // Injeta o bytecode Smali cirurgicamente na classe do player do YouTube
-            addInstructions(
+            // CORREÇÃO: Chamando o método 'addInstructions' explicitamente no escopo do método encontrado
+            this.addInstructions(
                 targetIndex,
                 """
                 # Captura a view atual e força o cálculo das margens físicas dos botões da One UI
