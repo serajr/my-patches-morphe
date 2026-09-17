@@ -10,6 +10,19 @@ import app.morphe.patcher.string
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
+object YouTubePlayerViewFingerprint : Fingerprint(
+    // Procura em classes internas do player do YouTube
+    definingClass = "Lcom/google/android/apps/youtube/app/player/",
+    returnType = "V", // Void
+    filters = listOf(
+        // Procura o método do ciclo de vida que anexa os listeners de janela ou UI
+        methodCall(
+            definingClass = "Landroidx/core/view/ViewCompat;",
+            name = "setOnApplyWindowInsetsListener"
+        )
+    )
+)
+
 /**
  * See:
  * https://github.com/MorpheApp/morphe-patcher/blob/main/docs
