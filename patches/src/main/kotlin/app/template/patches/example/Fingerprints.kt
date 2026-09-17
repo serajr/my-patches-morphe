@@ -96,4 +96,3 @@ object AdLoaderFingerprint : Fingerprint(
         opcode(Opcode.IF_EQ)
     )
 )
-
