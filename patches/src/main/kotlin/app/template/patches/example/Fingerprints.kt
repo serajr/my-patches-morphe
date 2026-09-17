@@ -1,21 +1,20 @@
 package app.template.patches.example
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.methodCall
+
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.literal
-import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.string
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 object YouTubePlayerViewFingerprint : Fingerprint(
-    // Procura em classes internas do player do YouTube
     definingClass = "Lcom/google/android/apps/youtube/app/player/",
-    returnType = "V", // Void
+    returnType = "V", 
     filters = listOf(
-        // Procura o método do ciclo de vida que anexa os listeners de janela ou UI
         methodCall(
             definingClass = "Landroidx/core/view/ViewCompat;",
             name = "setOnApplyWindowInsetsListener"
