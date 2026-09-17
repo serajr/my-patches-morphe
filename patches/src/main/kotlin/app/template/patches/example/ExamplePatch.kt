@@ -11,14 +11,16 @@ val examplePatch = bytecodePatch(
     dependsOn()
 
     execute {
-        // Encontra o método mapeado no arquivo Fingerprints.kt
-        YouTubePlayerViewFingerprint.methodOrNull?.apply {
-            
-            // Captura o índice da primeira instrução correspondente
+        // 1. Encontra e isola o método alvo mapeado no Fingerprints.kt
+        val targetMethod = YouTubePlayerViewFingerprint.methodOrNull
+
+        if (targetMethod != null) {
+            // 2. Captura o índice da primeira instrução correspondente encontrada
             val targetIndex = YouTubePlayerViewFingerprint.instructionMatches.first().index
             
-            // CORREÇÃO: Chamando o método 'addInstructions' explicitamente no escopo do método encontrado
-            this.addInstructions(
+            // 3. Injeta o bytecode Smali mantendo o escopo nativo da DSL do Morphe
+            addInstructions(
+                targetMethod,
                 targetIndex,
                 """
                 # Captura a view atual e força o cálculo das margens físicas dos botões da One UI
