@@ -1,19 +1,18 @@
 package app.template.patches.example
 
-import app.revanced.patcher.patch.BytecodePatch
-import app.revanced.patcher.patch.annotation.Patch
-import app.revanced.patcher.context.BytecodeContext
+import app.morphe.patcher.patch.bytecodePatch
 import app.template.patches.example.YouTubePlayerViewFingerprint
 
-@Patch(
+@Suppress("unused")
+val examplePatch = bytecodePatch(
     name = "Fix One UI Navigation Bar",
-    description = "Força o reprodutor de vídeo do YouTube a adicionar padding inferior correspondente à altura real dos botões fixos da One UI.",
-    dependencies = []
-)
-object ExamplePatch : BytecodePatch(setOf(YouTubePlayerViewFingerprint)) {
-    
-    override fun execute(context: BytecodeContext) {
-        // Encontra o método mapeado no passo 1 através do fingerprint local
+    description = "Força o reprodutor de vídeo do YouTube a adicionar padding inferior correspondente à altura real dos botões fixos da One UI."
+) {
+    // Caso seu patch precise de dependências globais, adicione-as dentro do bloco dependsOn
+    dependsOn()
+
+    execute {
+        // Encontra o método mapeado no arquivo Fingerprints.kt
         YouTubePlayerViewFingerprint.methodOrNull?.apply {
             
             // Captura o índice da primeira instrução correspondente
