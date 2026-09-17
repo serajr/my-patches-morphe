@@ -1,8 +1,8 @@
 package app.template.patches.example
 
-import app.revanced.patcher.patch.BytecodePatch
-import app.revanced.patcher.patch.annotation.Patch
-import app.revanced.patcher.context.BytecodeContext
+import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.annotation.Patch
+import app.morphe.patcher.context.BytecodeContext
 import app.template.patches.example.YouTubePlayerViewFingerprint
 
 @Patch(
@@ -12,12 +12,12 @@ import app.template.patches.example.YouTubePlayerViewFingerprint
 )
 object ExamplePatch : BytecodePatch(setOf(YouTubePlayerViewFingerprint)) {
     override fun execute(context: BytecodeContext) {
-        // Localiza o método mapeado pela assinatura digital (fingerprint)
+        // Encontra o método mapeado no passo 1
         YouTubePlayerViewFingerprint.methodOrNull?.apply {
-            // Captura o índice da primeira instrução correspondente encontrada
+            // Pega o índice da primeira instrução filtrada
             val targetIndex = YouTubePlayerViewFingerprint.instructionMatches.first().index
             
-            // Injeta o bytecode Smali na classe do player
+            // Injeta o bytecode Smali diretamente na classe do player do YouTube
             addInstructions(
                 targetIndex,
                 """
