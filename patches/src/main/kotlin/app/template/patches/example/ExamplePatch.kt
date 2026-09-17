@@ -52,4 +52,3 @@ object ExamplePatch : BytecodePatch() {
         }
     }
 }
-
