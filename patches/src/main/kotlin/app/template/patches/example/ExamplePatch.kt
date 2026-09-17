@@ -1,8 +1,8 @@
 package app.template.patches.example
 
-import app.morphe.patcher.Patch
-import app.morphe.patcher.BytecodePatch
-import app.morphe.patcher.DecodedPatchContext
+import app.revanced.patcher.patch.BytecodePatch
+import app.revanced.patcher.patch.annotation.Patch
+import app.revanced.patcher.context.BytecodeContext
 import app.template.patches.example.YouTubePlayerViewFingerprint
 
 @Patch(
@@ -10,23 +10,16 @@ import app.template.patches.example.YouTubePlayerViewFingerprint
     description = "Força o reprodutor de vídeo do YouTube a adicionar padding inferior correspondente à altura real dos botões fixos da One UI.",
     dependencies = []
 )
-// Passando os parâmetros nomeados obrigatórios exigidos pelo construtor interno do Morphe
-object ExamplePatch : BytecodePatch(
-    name = "Fix One UI Navigation Bar",
-    description = "Força o reprodutor de vídeo do YouTube a adicionar padding inferior correspondente à altura real dos botões fixos da One UI.",
-    dependencies = listOf()
-) {
+object ExamplePatch : BytecodePatch(setOf(YouTubePlayerViewFingerprint)) {
     
-    // CORREÇÃO: Utilizando a função de execução de bytecode correta do ecossistema Morphe
-    override fun executeDecoded(context: DecodedPatchContext) {
-        
+    override fun execute(context: BytecodeContext) {
         // Encontra o método mapeado no passo 1 através do fingerprint local
         YouTubePlayerViewFingerprint.methodOrNull?.apply {
             
             // Captura o índice da primeira instrução correspondente
             val targetIndex = YouTubePlayerViewFingerprint.instructionMatches.first().index
             
-            // Injeta o bytecode Smali na classe do player do YouTube
+            // Injeta o bytecode Smali cirurgicamente na classe do player do YouTube
             addInstructions(
                 targetIndex,
                 """
